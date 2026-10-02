@@ -1,0 +1,188 @@
+{
+  "version": "2",
+  "templates": [
+    {
+      "type": 2,
+      "title": "Homelab Core Stack (AdGuard + NPM + Dockhand)",
+      "name": "homelab-core-stack",
+      "description": "Complete homelab suite: AdGuard Home (macvlan DNS ad-blocker), Nginx Proxy Manager (Reverse Proxy + TLS), and Dockhand (Docker UI management). Fully healthchecked.",
+      "categories": ["Homelab", "Networking", "Management"],
+      "platform": "linux",
+      "logo": "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/dockhand.png",
+      "repository": {
+        "url": "https://github.com/virajt71/Homelab",
+        "stackfile": "stacks/homelab-full/compose.yaml"
+      },
+      "env": [
+        {
+          "name": "AGH_IP",
+          "label": "AdGuard Home Static LAN IP",
+          "default": "192.168.50.145",
+          "description": "Dedicated LAN IP for AdGuard Home macvlan interface"
+        },
+        {
+          "name": "SUBNET",
+          "label": "LAN Subnet",
+          "default": "192.168.50.0/24",
+          "description": "Local area network subnet CIDR"
+        },
+        {
+          "name": "GATEWAY",
+          "label": "LAN Gateway IP",
+          "default": "192.168.50.1",
+          "description": "Router/Gateway IP address"
+        },
+        {
+          "name": "PARENT_NIC",
+          "label": "Host Network Interface",
+          "default": "eno1",
+          "description": "Physical ethernet card on host (e.g., eth0, eno1)"
+        },
+        {
+          "name": "TZ",
+          "label": "Timezone",
+          "default": "Europe/Warsaw",
+          "description": "Container timezone setting"
+        }
+      ]
+    },
+    {
+      "type": 1,
+      "title": "AdGuard Home",
+      "name": "adguard-home",
+      "description": "Network-wide software for blocking ads & tracking. Covers all home devices without needing client-side software.",
+      "categories": ["Networking", "Security"],
+      "platform": "linux",
+      "logo": "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/adguard-home.png",
+      "image": "adguard/adguardhome:latest",
+      "ports": [
+        "53:53/tcp",
+        "53:53/udp",
+        "784:784/udp",
+        "853:853/tcp",
+        "3000:3000/tcp"
+      ],
+      "volumes": [
+        {
+          "container": "/opt/adguardhome/work",
+          "bind": "agh_work"
+        },
+        {
+          "container": "/opt/adguardhome/conf",
+          "bind": "agh_conf"
+        }
+      ],
+      "env": [
+        {
+          "name": "TZ",
+          "label": "Timezone",
+          "default": "Europe/Warsaw",
+          "description": "System timezone for log timestamps"
+        }
+      ],
+      "restart_policy": "unless-stopped"
+    },
+    {
+      "type": 1,
+      "title": "Nginx Proxy Manager",
+      "name": "nginx-proxy-manager",
+      "description": "Docker container for managing Nginx proxy hosts with a clean web UI and automatic free Let's Encrypt SSL certificates.",
+      "categories": ["Networking", "Proxy"],
+      "platform": "linux",
+      "logo": "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/nginx-proxy-manager.png",
+      "image": "jc21/nginx-proxy-manager:latest",
+      "ports": [
+        "80:80/tcp",
+        "81:81/tcp",
+        "443:443/tcp"
+      ],
+      "volumes": [
+        {
+          "container": "/data",
+          "bind": "npm_data"
+        },
+        {
+          "container": "/etc/letsencrypt",
+          "bind": "npm_letsencrypt"
+        }
+      ],
+      "env": [
+        {
+          "name": "TZ",
+          "label": "Timezone",
+          "default": "Europe/Warsaw",
+          "description": "Timezone for log files and certificates"
+        },
+        {
+          "name": "DISABLE_IPV6",
+          "label": "Disable IPv6",
+          "default": "true",
+          "description": "Set true to disable IPv6 listener in Nginx"
+        }
+      ],
+      "restart_policy": "unless-stopped"
+    },
+    {
+      "type": 1,
+      "title": "Dockhand",
+      "name": "dockhand",
+      "description": "Lightweight, modern self-hosted Docker management software with template catalog support and multi-host control.",
+      "categories": ["Management", "Docker"],
+      "platform": "linux",
+      "logo": "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/dockhand.png",
+      "image": "fnsys/dockhand:latest",
+      "ports": [
+        "3000:3000/tcp"
+      ],
+      "volumes": [
+        {
+          "container": "/var/run/docker.sock",
+          "bind": "/var/run/docker.sock"
+        },
+        {
+          "container": "/app/data",
+          "bind": "dockhand_data"
+        }
+      ],
+      "env": [
+        {
+          "name": "NODE_ENV",
+          "label": "Environment Mode",
+          "default": "production",
+          "description": "Node execution environment (production/development)"
+        },
+        {
+          "name": "PORT",
+          "label": "Application Port",
+          "default": "3000",
+          "description": "Internal HTTP listening port"
+        },
+        {
+          "name": "HOST",
+          "label": "Bind Address",
+          "default": "0.0.0.0",
+          "description": "Listen host IP interface"
+        },
+        {
+          "name": "DATA_DIR",
+          "label": "Data Path",
+          "default": "/app/data",
+          "description": "Container internal storage directory"
+        },
+        {
+          "name": "PUID",
+          "label": "User ID (PUID)",
+          "default": "1000",
+          "description": "User ID for file ownership"
+        },
+        {
+          "name": "PGID",
+          "label": "Group ID (PGID)",
+          "default": "1000",
+          "description": "Group ID for file ownership"
+        }
+      ],
+      "restart_policy": "unless-stopped"
+    }
+  ]
+}
