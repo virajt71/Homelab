@@ -1,12 +1,12 @@
 # Homelab & Dockhand Template Catalog 🚀
 
-Self-hosted Docker Compose stack for home network infrastructure — DNS-level ad-blocking, TLS reverse proxy, container management, and a curated **Dockhand & Portainer App Template Catalog**.
+Self-hosted Docker Compose stack for home network infrastructure — DNS-level ad-blocking, TLS reverse proxy, container management, and a curated **Dockhand & Portainer Stack Template**.
 
 ---
 
 ## 📦 Dockhand & Portainer Template Catalog
 
-This repository serves as a **Portainer v2 / Dockhand compatible App Template Catalog** specifically tailored for the **Homelab Core Stack** and its component services. Easily deploy self-hosted applications with pre-configured ports, environment variables, and persistent volumes directly from your **Dockhand** or **Portainer** dashboard.
+This repository serves as a **Portainer v2 / Dockhand compatible App Template Catalog** for deploying the complete **Homelab Stack** (AdGuard Home + Nginx Proxy Manager + Dockhand) as a single unified stack.
 
 ### 🔗 Template Catalog Raw URL
 
@@ -25,7 +25,7 @@ https://raw.githubusercontent.com/virajt71/Homelab/develop/templates.json
 3. Click **Add Source** or update the Template URL field.
 4. Paste the URL:
    `https://raw.githubusercontent.com/virajt71/Homelab/develop/templates.json`
-5. Save changes and navigate to the **Templates** tab to browse and deploy apps with a single click!
+5. Save changes and navigate to the **Templates** tab. You will see **1 single template card** for the entire Homelab stack!
 
 ---
 
@@ -35,24 +35,21 @@ https://raw.githubusercontent.com/virajt71/Homelab/develop/templates.json
 2. Go to **Settings** in the left sidebar.
 3. Under **App Templates**, select **Use custom template URL** (or **External templates**).
 4. Enter `https://raw.githubusercontent.com/virajt71/Homelab/develop/templates.json` into the **URL** field.
-5. Click **Save settings**, then head to **App Templates** in the sidebar to view all available applications.
+5. Click **Save settings**, then head to **App Templates** in the sidebar.
 
 ---
 
-## 📚 Included Templates
+## 📚 Included Template
 
-| Icon | Application | Category | Type | Default Ports | Description |
+| Icon | Application | Category | Type | Services Included | Description |
 | :---: | :--- | :--- | :---: | :---: | :--- |
-| <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/dockhand.png" width="32"> | **Homelab Core Stack** | Homelab, Networking | Stack | `53`, `80`, `81`, `443`, `3000` | Full 3-in-1 stack: AdGuard Home (macvlan DNS), NPM (Proxy/TLS), Dockhand (UI). |
-| <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/adguard-home.png" width="32"> | **AdGuard Home** | Networking, Security | Container | `53`, `784`, `853`, `3000` | Network-wide DNS ad-blocker & tracker protection. |
-| <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/nginx-proxy-manager.png" width="32"> | **Nginx Proxy Manager** | Networking, Proxy | Container | `80`, `81`, `443` | Reverse proxy with automated Let's Encrypt SSL management. |
-| <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/dockhand.png" width="32"> | **Dockhand** | Management, Docker | Container | `3000` | Lightweight Docker management software with template catalog support. |
+| <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/dockhand.png" width="32"> | **Homelab** | Homelab, Networking, Management | Stack | `adguardhome`, `npm`, `dockhand` | Complete 3-in-1 stack: AdGuard Home (macvlan DNS), NPM (Proxy/TLS), and Dockhand (UI). |
 
 ---
 
 ## 🏛️ Local Homelab Stack Architecture
 
-When running the full stack using `stacks/homelab-full/compose.yaml`:
+When running the stack using `stacks/homelab-full/compose.yaml`:
 
 | Service | Image | Role | Network / Ports |
 |---|---|---|---|
@@ -96,13 +93,3 @@ Homelab/
 │       └── compose.yaml        # Main Docker Compose file for full Homelab stack
 └── README.md
 ```
-
----
-
-## 🤝 Contributing New Templates
-
-Want to add a new app template to the catalog?
-
-1. Add your application definition into [`templates.json`](templates.json).
-2. If it's a multi-container stack, add its compose file under `stacks/<app-name>/compose.yaml`.
-3. Submit a Pull Request!
