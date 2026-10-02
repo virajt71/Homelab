@@ -2,9 +2,9 @@
   "version": "2",
   "templates": [
     {
-      "type": 2,
-      "title": "Homelab",
-      "name": "homelab-full-stack",
+      "type": 3,
+      "title": "Homelab Core Stack (AdGuard + NPM + Dockhand)",
+      "name": "homelab-core-stack",
       "description": "Complete self-hosted home network stack: AdGuard Home (macvlan DNS ad-blocker), Nginx Proxy Manager (Reverse Proxy + TLS), and Dockhand (Docker UI management). Fully healthchecked.",
       "categories": ["Homelab", "Networking", "Management"],
       "platform": "linux",
